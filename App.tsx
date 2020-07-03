@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { View, useWindowDimensions } from "react-native";
-import { G } from "react-native-svg";
-import * as d3 from "d3";
 import useInterval from "@use-it/interval";
+import React, { useState } from "react";
+import { Text, View } from "react-native";
 import { Graph } from "./Graph";
+import { Rocket } from "./Rocket";
 
 export default function App() {
   const Force = 1;
@@ -22,13 +21,34 @@ export default function App() {
   return (
     <View
       style={{
-        justifyContent: "center",
-        alignItems: "center",
         height: "100%",
         width: "100%",
       }}
     >
-      <Graph Time={Time} Distance={Distance} Acceleration={Acceleration} />
+      <View
+        style={{
+          width: "100%",
+          borderBottomColor: "black",
+          flexDirection: "row",
+          borderBottomWidth: 1,
+          paddingBottom: 10,
+        }}
+      >
+        <Graph Time={Time} Distance={Distance} Acceleration={Acceleration} />
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "pink",
+            height: "100%",
+            width: "100%",
+          }}
+        >
+          <Text>This will be an equation list</Text>
+        </View>
+      </View>
+      <View style={{flex: 1}}>
+        <Rocket Distance={Distance}/>
+      </View>
     </View>
   );
 }

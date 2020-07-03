@@ -48,12 +48,13 @@ const XAxis = ({ step = 10, minX = 0, maxX = 100, maxY = 100, unit = "s" }) => {
     <>
       <HorizontalBar minX={minX} maxX={maxX} maxY={maxY} />
       {steps.map((step) => (
-        <View key={step}>
-          <XTick key={"XTick-" + step} step={step} maxY={maxY} />
-          <Label key={"XLabel-" + step} x={step} y={maxY + 20}>
+        //   Adding key breaks render
+        <>
+          <XTick step={step} maxY={maxY} />
+          <Label x={step} y={maxY + 20}>
             {`${step}${unit}`}
           </Label>
-        </View>
+        </>
       ))}
     </>
   );

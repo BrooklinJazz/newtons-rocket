@@ -1,25 +1,18 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import { Text, View, useWindowDimensions } from "react-native";
-import styled from "styled-components/native";
-import useInterval from "@use-it/interval";
+import React from 'react';
+import { useWindowDimensions, View } from 'react-native';
+import styled from 'styled-components/native';
 
-const Rocket = styled.View`
+const RocketIcon = styled.View`
   background-color: red;
   height: 20px;
   width: 10px;
 `;
 
-export default function App() {
-  const Force = 100;
-  const Mass = 2;
-  const Acceleration = Force / Mass;
-  const [Time, setTime] = useState(0);
-  const Speed = Acceleration * Time;
-  const Distance = Speed * Time;
-  useInterval(() => {
-    setTime(Time + (0.01));
-  }, 10);
+export const Rocket = ({ Distance, maxY = 100 }: {Distance: number, maxY: number}) => {
+    const {height} = useWindowDimensions()
+    // TODO why does 27 work instead of 20?
+    const rocketHeightPercent = 27 / height * 100
+
   return (
     <View
       style={{
@@ -27,9 +20,11 @@ export default function App() {
         alignItems: "center",
         height: "100%",
         width: "100%",
+        position: "relative",
+        overflow: "hidden"
       }}
     >
-      <Rocket style={{ position: "absolute", bottom: Distance}} />
+      <RocketIcon style={{ position: "absolute", bottom: `${Distance}%` }} />
     </View>
   );
-}
+};
