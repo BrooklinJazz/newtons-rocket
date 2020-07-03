@@ -10,8 +10,6 @@ const RocketIcon = styled.View`
 
 export const Rocket = ({ Distance, maxY = 100 }: {Distance: number, maxY: number}) => {
     const {height} = useWindowDimensions()
-    // TODO why does 27 work instead of 20?
-    const rocketHeightPercent = 27 / height * 100
 
   return (
     <View
