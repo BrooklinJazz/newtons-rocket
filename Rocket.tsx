@@ -1,5 +1,5 @@
 import React from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import { View } from 'react-native';
 import styled from 'styled-components/native';
 
 const RocketIcon = styled.View`
@@ -8,7 +8,7 @@ const RocketIcon = styled.View`
   width: 10px;
 `;
 
-export const Rocket = ({ Distance }: {Distance: number, maxY: number}) => {
+export const Rocket = ({ Distance }: {Distance: number}) => {
 
   return (
     <View
