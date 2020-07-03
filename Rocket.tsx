@@ -8,8 +8,7 @@ const RocketIcon = styled.View`
   width: 10px;
 `;
 
-export const Rocket = ({ Distance, maxY = 100 }: {Distance: number, maxY: number}) => {
-    const {height} = useWindowDimensions()
+export const Rocket = ({ Distance }: {Distance: number, maxY: number}) => {
 
   return (
     <View
