@@ -1,9 +1,11 @@
-import useInterval from "@use-it/interval";
-import React, { useState, useEffect } from "react";
-import { Button, Text, View, TouchableOpacity, Alert } from "react-native";
-import { Graph } from "./Graph";
-import { Rocket } from "./Rocket";
-import styled from "styled-components/native";
+import useInterval from '@use-it/interval';
+import React, { useEffect, useState } from 'react';
+import { Alert, Text, View } from 'react-native';
+import styled from 'styled-components/native';
+import { Graph } from './Graph';
+import { Rocket } from './Rocket';
+
+
 
 const LaunchTouchable = styled.TouchableOpacity`
   width: 100%;
