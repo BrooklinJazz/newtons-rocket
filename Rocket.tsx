@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import styled from 'styled-components/native';
+import { IPhysics } from './App';
 
 const RocketIcon = styled.View`
   background-color: red;
@@ -8,8 +9,7 @@ const RocketIcon = styled.View`
   width: 10px;
 `;
 
-export const Rocket = ({ Distance }: {Distance: number}) => {
-
+export const Rocket = ({ Distance }: Pick<IPhysics, "Distance">) => {
   return (
     <View
       style={{

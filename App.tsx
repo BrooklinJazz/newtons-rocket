@@ -1,45 +1,33 @@
-import useInterval from '@use-it/interval';
-import React, { useEffect, useState } from 'react';
-import { Alert, Text, View } from 'react-native';
-import styled from 'styled-components/native';
-import { Graph } from './Graph';
-import { Rocket } from './Rocket';
+import useInterval from "@use-it/interval";
+import React, { useEffect, useState } from "react";
+import { Alert, View, SafeAreaView } from "react-native";
+import { Graph } from "./Graph";
+import { Rocket } from "./Rocket";
+import { LaunchButton } from "./LaunchButton";
+import { Equations } from "./Equations";
 
+export const MaximumDistance = 100;
 
-
-const LaunchTouchable = styled.TouchableOpacity`
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
-`;
-
-const LaunchText = styled.Text.attrs(() => ({
-  children: "LAUNCH",
-}))``;
-
-const LaunchButton = ({ onPress }: { onPress: () => void }) => {
-  return (
-    <LaunchTouchable onPress={onPress}>
-      <LaunchText />
-    </LaunchTouchable>
-  );
-};
-
-// TODO use this constant everywhere
-const maxY = 100;
+export interface IPhysics {
+  Acceleration: number;
+  Force: number;
+  Mass: number;
+  Time: number;
+  Distance: number;
+  Velocity: number;
+}
 
 export default function App() {
-  const Force = 1;
+  const Force = 1000;
   const Mass = 100;
   const Acceleration = Force / Mass;
   const [Time, setTime] = useState(0);
-  const Speed = Acceleration * Time;
-  const Distance = Speed * Time;
+  const Velocity = Acceleration * Time;
+  const Distance = Velocity * Time;
   const [started, setStarted] = useState(false);
   const start = () => setStarted(true);
   useEffect(() => {
-    if (Distance >= maxY) {
+    if (Distance >= MaximumDistance) {
       Alert.alert("Huston we have liftoff!!!", undefined, [
         {
           text: "Roger! Lets do it again",
@@ -53,42 +41,35 @@ export default function App() {
   }, [Distance]);
   useInterval(
     () => {
-      setTime(Time + 1);
+      setTime(Time + 0.1);
     },
-    Distance === 100 || !started ? null : 100
+    Distance >= MaximumDistance || !started ? null : 10
   );
   return (
-    <View
-      style={{
-        height: "100%",
-        width: "100%",
-      }}
-    >
+    <SafeAreaView>
       <View
         style={{
+          height: "100%",
           width: "100%",
-          borderBottomColor: "black",
-          flexDirection: "row",
-          borderBottomWidth: 1,
-          paddingBottom: 10,
         }}
       >
-        <Graph Time={Time} Distance={Distance} Acceleration={Acceleration} />
         <View
           style={{
-            flex: 1,
-            backgroundColor: "pink",
-            height: "100%",
             width: "100%",
+            borderBottomColor: "black",
+            flexDirection: "row",
+            borderBottomWidth: 1,
+            paddingBottom: 10,
           }}
         >
-          <Text>This will be an equation list</Text>
+          <Graph Time={Time} Distance={Distance} Acceleration={Acceleration} />
+          <Equations Distance={Distance} Time={Time} Velocity={Velocity} Mass={Mass} Force={Force} Acceleration={Acceleration} />
         </View>
+        <View style={{ flex: 1 }}>
+          <Rocket Distance={Distance} />
+        </View>
+        <LaunchButton onPress={start} />
       </View>
-      <View style={{ flex: 1 }}>
-        <Rocket Distance={Distance} />
-      </View>
-      <LaunchButton onPress={start} />
-    </View>
+    </SafeAreaView>
   );
 }

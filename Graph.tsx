@@ -1,6 +1,27 @@
 import React from "react";
 import { View } from "react-native";
 import { Svg, Path, Line, Text, Circle } from "react-native-svg";
+import { IPhysics, MaximumDistance } from "./App";
+
+export const Graph = ({
+  Time,
+  Distance,
+  Acceleration,
+}: Pick<IPhysics, "Time" | "Distance" | "Acceleration">) => {
+  return (
+    <Svg style={{ height: 200, width: 200 }} viewBox="-30 -30 150 150">
+      <Circle cx={Time} cy={100 - Distance} r="5" fill={"red"} />
+      <Path
+        d={`M 0,100 ${plotPoints(Acceleration)}`}
+        fill="none"
+        stroke={"black"}
+      />
+      <XAxis step={20} />
+      <YAxis step={20} />
+    </Svg>
+  );
+};
+
 
 const Label = ({ ...props }) => (
   <Text
@@ -77,35 +98,22 @@ const YAxis = ({ step = 10, minY = 0, minX = 0, maxY = 100, unit = "m" }) => {
     </>
   );
 };
-const plotPoints = (Acceleration: number) =>
-  new Array(100)
+const plotPoints = (Acceleration: number) => {
+  let hitMaximumDistance = false
+  return new Array(100)
     .fill("")
     .map((_, Time) => {
-      const Speed = Acceleration * Time;
-      const Distance = Speed * Time;
+      const Velocity = Acceleration * Time;
+      const Distance = Velocity * Time;
+      // Draw last point after hitting the max distance
+      if (hitMaximumDistance) {
+        return
+      }
+      if (Distance >= MaximumDistance) {
+        hitMaximumDistance = true
+      }
       return `L ${Time}, ${100 - Distance}`;
     })
+    .filter(each=> each)
     .join("");
-
-export const Graph = ({
-  Time,
-  Distance,
-  Acceleration,
-}: {
-  Time: number;
-  Distance: number;
-  Acceleration: number;
-}) => {
-  return (
-    <Svg style={{ height: 200, width: 200 }} viewBox="-30 -30 150 150">
-      <Circle cx={Time} cy={100 - Distance} r="5" fill={"red"} />
-      <Path
-        d={`M 0,100 ${plotPoints(Acceleration)}`}
-        fill="none"
-        stroke={"black"}
-      />
-      <XAxis step={20} />
-      <YAxis step={20} />
-    </Svg>
-  );
-};
+}
