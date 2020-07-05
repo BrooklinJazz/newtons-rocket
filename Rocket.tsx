@@ -1,20 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Image } from 'react-native';
 import styled from 'styled-components/native';
 import { IPhysics } from "./IPhysics";
 import Svg, {SvgUri} from 'react-native-svg';
-
-const RocketIcon = styled.View`
-  background-color: red;
-  height: 20px;
-  width: 10px;
-`;
-
-// @ts-ignore
 import  RocketNoFlames from "./assets/RocketNoFlames.png"
 import  RocketWithFlames from "./assets/RocketWithFlames.png"
+import { PhysicsContext } from './PhysicsContext';
 
-export const Rocket = ({ Distance, started }: Pick<IPhysics, "Distance" | "started">) => {
+export const Rocket = () => {
+  const {Distance, started} = useContext(PhysicsContext)
   return (
     <View
       style={{

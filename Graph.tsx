@@ -1,13 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Svg, Path, Line, Text, Circle } from "react-native-svg";
 import { MaximumDistance } from "./MaximumDistance";
 import { IPhysics } from "./IPhysics";
+import { PhysicsContext } from "./PhysicsContext";
 
-export const Graph = ({
-  Time,
-  Distance,
-  Acceleration,
-}: Pick<IPhysics, "Time" | "Distance" | "Acceleration">) => {
+export const Graph = () => {
+  const {Time, Distance, Acceleration} = useContext(PhysicsContext)
   return (
     <Svg style={{ height: 200, width: 200 }} viewBox="-30 -30 150 150">
       <Circle cx={Time} cy={100 - Distance} r="5" fill={"red"} />

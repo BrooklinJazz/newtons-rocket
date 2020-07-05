@@ -1,35 +1,52 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text, View } from "react-native";
 import { IPhysics } from "./IPhysics";
+import { PhysicsContext } from "./PhysicsContext";
+import styled from "styled-components/native";
+const AEqualsBTimesC = ({
+  A,
+  B,
+  C,
+  bold
+}: {
+  A: number | string;
+  B: number | string;
+  C: number | string;
+  bold: boolean;
+}) => {
+  const [Aformatted, Bformatted, Cformatted] = [A, B, C].map((each) =>
+    typeof each === "string" ? each : each.toFixed(2)
+  );
+  return (
+    <Text style={{fontWeight: bold ? "bold" : "normal"}}>
+      {Aformatted} = {Bformatted} * {Cformatted}
+    </Text>
+  );
+};
 
-export const Equations = ({
-  Acceleration,
-  Mass,
-  Force,
-  Velocity,
-  Time,
-  Distance
-}: Pick<IPhysics, "Acceleration" | "Mass" | "Force" | "Velocity" | "Time" | "Distance">) => {
+export const Equations = () => {
+  const { Force, Mass, Acceleration, Velocity, Time, Distance } = useContext(
+    PhysicsContext
+  );
   return (
     <View
       style={{
         flex: 1,
-        height: "100%",
-        width: "100%",
+        justifyContent: "space-evenly",
       }}
     >
-      <Text>F = M * A</Text>
-      <Text>
-        {Force.toFixed(2)} = {Mass.toFixed(2)} * {Acceleration.toFixed(2)}
-      </Text>
-      <Text>V = T * A </Text>
-      <Text>
-        {Velocity.toFixed(2)} = {Time.toFixed(2)} * {Acceleration.toFixed(2)}
-      </Text>
-      <Text>D = ∆T * ∆V</Text>
-      <Text>
-        {Distance.toFixed(2)} = {Time.toFixed(2)} * {Velocity.toFixed(2)}
-      </Text>
+      <View>
+        <AEqualsBTimesC bold A="F" B="M" C="A" />
+        <AEqualsBTimesC A={Force} B={Mass} C={Acceleration} />
+      </View>
+      <View>
+        <AEqualsBTimesC bold A="V" B="T" C="A" />
+        <AEqualsBTimesC A={Velocity} B={Time} C={Acceleration} />
+      </View>
+      <View>
+        <AEqualsBTimesC bold A={"D"} B={"T"} C={"V"} />
+        <AEqualsBTimesC A={Distance} B={Time} C={Velocity} />
+      </View>
     </View>
   );
 };
