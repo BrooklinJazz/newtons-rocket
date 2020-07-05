@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { IPhysics } from "./App";
+import { IPhysics } from "./IPhysics";
 
 export const Equations = ({
   Acceleration,

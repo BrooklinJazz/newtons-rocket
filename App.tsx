@@ -5,20 +5,10 @@ import { Graph } from "./Graph";
 import { Rocket } from "./Rocket";
 import { LaunchButton } from "./LaunchButton";
 import { Equations } from "./Equations";
-
-export const MaximumDistance = 100;
-
-export interface IPhysics {
-  Acceleration: number;
-  Force: number;
-  Mass: number;
-  Time: number;
-  Distance: number;
-  Velocity: number;
-}
+import { MaximumDistance } from "./MaximumDistance";
 
 export default function App() {
-  const Force = 1000;
+  const Force = 10;
   const Mass = 100;
   const Acceleration = Force / Mass;
   const [Time, setTime] = useState(0);
@@ -66,7 +56,7 @@ export default function App() {
           <Equations Distance={Distance} Time={Time} Velocity={Velocity} Mass={Mass} Force={Force} Acceleration={Acceleration} />
         </View>
         <View style={{ flex: 1 }}>
-          <Rocket Distance={Distance} />
+          <Rocket Distance={Distance} started={started} />
         </View>
         <LaunchButton onPress={start} />
       </View>

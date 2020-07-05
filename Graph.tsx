@@ -1,7 +1,7 @@
 import React from "react";
-import { View } from "react-native";
 import { Svg, Path, Line, Text, Circle } from "react-native-svg";
-import { IPhysics, MaximumDistance } from "./App";
+import { MaximumDistance } from "./MaximumDistance";
+import { IPhysics } from "./IPhysics";
 
 export const Graph = ({
   Time,
