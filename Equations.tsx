@@ -3,24 +3,30 @@ import { Text, View } from "react-native";
 import { IPhysics } from "./IPhysics";
 import { PhysicsContext } from "./PhysicsContext";
 import styled from "styled-components/native";
+import { foreground } from "./Colors";
+
+export const BaseText = styled.Text`
+  color: ${foreground};
+`
+
 const AEqualsBTimesC = ({
   A,
   B,
   C,
-  bold
+  bold = false
 }: {
   A: number | string;
   B: number | string;
   C: number | string;
-  bold: boolean;
+  bold?: boolean;
 }) => {
   const [Aformatted, Bformatted, Cformatted] = [A, B, C].map((each) =>
     typeof each === "string" ? each : each.toFixed(2)
   );
   return (
-    <Text style={{fontWeight: bold ? "bold" : "normal"}}>
+    <BaseText style={{fontWeight: bold ? "bold" : "normal"}}>
       {Aformatted} = {Bformatted} * {Cformatted}
-    </Text>
+    </BaseText>
   );
 };
 

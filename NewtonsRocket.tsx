@@ -7,6 +7,8 @@ import { LaunchButton } from "./LaunchButton";
 import { Equations } from "./Equations";
 import { MaximumDistance } from "./MaximumDistance";
 import { PhysicsContext } from "./PhysicsContext";
+import { background } from "./Colors";
+
 export const NewtonsRocket = () => {
   const { Distance, stop, incrementTime, started, start } = useContext(PhysicsContext);
 
@@ -37,10 +39,11 @@ export const NewtonsRocket = () => {
       <View
         style={{
           width: "100%",
-          borderBottomColor: "black",
+          borderBottomColor: background,
           flexDirection: "row",
           borderBottomWidth: 1,
           paddingBottom: 10,
+          backgroundColor: background,
         }}
       >
         <Graph/>

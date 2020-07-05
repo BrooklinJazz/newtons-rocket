@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
-import { Svg, Path, Line, Text, Circle } from "react-native-svg";
+import { Svg, Path, Line, Text as SvgText, Circle } from "react-native-svg";
 import { MaximumDistance } from "./MaximumDistance";
 import { IPhysics } from "./IPhysics";
 import { PhysicsContext } from "./PhysicsContext";
+import { foreground } from "./Colors";
 
 export const Graph = () => {
   const {Time, Distance, Acceleration} = useContext(PhysicsContext)
@@ -12,7 +13,7 @@ export const Graph = () => {
       <Path
         d={`M 0,100 ${plotPoints(Acceleration)}`}
         fill="none"
-        stroke={"black"}
+        stroke={foreground}
       />
       <XAxis step={20} />
       <YAxis step={20} />
@@ -22,9 +23,9 @@ export const Graph = () => {
 
 
 const Label = ({ ...props }) => (
-  <Text
-    fill={"black"}
-    stroke={"black"}
+  <SvgText
+    fill={foreground}
+    stroke={foreground}
     fontSize={"8"}
     textAnchor={"middle"}
     strokeWidth={0.2}
@@ -32,7 +33,7 @@ const Label = ({ ...props }) => (
   />
 );
 const Tick = ({ ...props }) => (
-  <Line stroke={"black"} strokeWidth={1} {...props} />
+  <Line stroke={foreground} strokeWidth={1} {...props} />
 );
 const XTick = ({ step, maxY }: { step: number; maxY: number }) => (
   <Tick x1={step} x2={step} y1={maxY} y2={maxY + 5} />
@@ -40,7 +41,7 @@ const XTick = ({ step, maxY }: { step: number; maxY: number }) => (
 const YTick = ({ step, maxY }: { step: number; maxY: number }) => (
   <Tick x1={0} x2={-5} y1={maxY - step} y2={maxY - step} />
 );
-const Bar = ({ ...props }) => <Line stroke="#000" strokeWidth="1" {...props} />;
+const Bar = ({ ...props }) => <Line stroke={foreground} strokeWidth="1" {...props} />;
 const HorizontalBar = ({
   minX,
   maxY,
@@ -59,7 +60,7 @@ const VerticalBar = ({
   maxY: number;
   minY: number;
 }) => <Bar x1={minX} x2={minX} y1={minY} y2={maxY} />;
-const XAxis = ({ step = 10, minX = 0, maxX = 100, maxY = 100, unit = "s" }) => {
+const XAxis = ({ step = 10, minX = 0, maxX = 100, maxY = 100, unit = "s", measurement = "t" }) => {
   const steps = new Array(Math.floor(maxX / step))
     .fill("")
     .map((_, i) => i * step);
@@ -71,14 +72,14 @@ const XAxis = ({ step = 10, minX = 0, maxX = 100, maxY = 100, unit = "s" }) => {
         <>
           <XTick step={step} maxY={maxY} />
           <Label x={step} y={maxY + 20}>
-            {`${step}${unit}`}
+            {`${step === 0 ? measurement : step + unit}`}
           </Label>
         </>
       ))}
     </>
   );
 };
-const YAxis = ({ step = 10, minY = 0, minX = 0, maxY = 100, unit = "m" }) => {
+const YAxis = ({ step = 10, minY = 0, minX = 0, maxY = 100, unit = "m", measurement="d" }) => {
   const steps = new Array(Math.floor(maxY / step))
     .fill("")
     .map((_, i) => i * step);
@@ -89,7 +90,7 @@ const YAxis = ({ step = 10, minY = 0, minX = 0, maxY = 100, unit = "m" }) => {
         <>
           <YTick key={"YTick-" + step} step={step} maxY={maxY} />
           <Label key={"YLabel-" + step} x={-20} y={maxY - step}>
-            {`${step}${unit}`}
+          {`${step === 0 ? measurement : step + unit}`}
           </Label>
         </>
       ))}
