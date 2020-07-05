@@ -1,6 +1,6 @@
 import useInterval from "@use-it/interval";
 import React, { useEffect, useContext } from "react";
-import { Alert, View } from "react-native";
+import { Alert, View, TextInput } from "react-native";
 import { Graph } from "./Graph";
 import { Rocket } from "./Rocket";
 import { LaunchButton } from "./LaunchButton";
@@ -8,9 +8,11 @@ import { Equations } from "./Equations";
 import { MaximumDistance } from "./MaximumDistance";
 import { PhysicsContext } from "./PhysicsContext";
 import { background } from "./Colors";
-
+import { ControlPanel } from "./ControlPanel";
 export const NewtonsRocket = () => {
-  const { Distance, stop, incrementTime, started, start } = useContext(PhysicsContext);
+  const { Distance, stop, incrementTime, started, start } = useContext(
+    PhysicsContext
+  );
 
   useEffect(() => {
     if (Distance >= MaximumDistance) {
@@ -22,12 +24,6 @@ export const NewtonsRocket = () => {
       ]);
     }
   }, [Distance]);
-  useInterval(
-    () => {
-      incrementTime();
-    },
-    Distance >= MaximumDistance || !started ? null : 10
-  );
 
   return (
     <View
@@ -42,15 +38,16 @@ export const NewtonsRocket = () => {
           borderBottomColor: background,
           flexDirection: "row",
           borderBottomWidth: 1,
-          paddingBottom: 10,
+          padding: 10,
           backgroundColor: background,
         }}
       >
-        <Graph/>
+        <Graph />
         <Equations />
       </View>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, justifyContent: "flex-end" }}>
         <Rocket />
+        <ControlPanel />
       </View>
       <LaunchButton onPress={start} />
     </View>

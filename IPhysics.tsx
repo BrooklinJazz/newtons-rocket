@@ -10,4 +10,7 @@ export interface IPhysics {
   start: () => void;
   stop: () => void;
   incrementTime: () => void;
+  onChangeForce: (value: number) => void;
+  onChangeMass: (value: number) => void;
+  onChangeAcceleration: (value: number) => void;
 }

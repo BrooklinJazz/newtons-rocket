@@ -6,9 +6,17 @@ import Svg, {SvgUri} from 'react-native-svg';
 import  RocketNoFlames from "./assets/RocketNoFlames.png"
 import  RocketWithFlames from "./assets/RocketWithFlames.png"
 import { PhysicsContext } from './PhysicsContext';
+import useInterval from '@use-it/interval';
+import { MaximumDistance } from './MaximumDistance';
 
 export const Rocket = () => {
-  const {Distance, started} = useContext(PhysicsContext)
+  const {Distance, started, incrementTime} = useContext(PhysicsContext)
+  useInterval(
+    () => {
+      incrementTime();
+    },
+    Distance >= MaximumDistance || !started ? null : 10
+  );
   return (
     <View
       style={{
