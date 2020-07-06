@@ -1,6 +1,6 @@
 import useInterval from "@use-it/interval";
 import React, { useEffect, useContext } from "react";
-import { Alert, View, TextInput } from "react-native";
+import { Alert, View, TextInput, Platform } from "react-native";
 import { Graph } from "./Graph";
 import { Rocket } from "./Rocket";
 import { LaunchButton } from "./LaunchButton";
@@ -10,7 +10,7 @@ import { PhysicsContext } from "./PhysicsContext";
 import { background } from "./Colors";
 import { ControlPanel } from "./ControlPanel";
 export const NewtonsRocket = () => {
-  const { Distance, stop, incrementTime, started, start } = useContext(
+  const { Distance, stop, start } = useContext(
     PhysicsContext
   );
 
@@ -45,7 +45,7 @@ export const NewtonsRocket = () => {
         <Graph />
         <Equations />
       </View>
-      <View style={{ flex: 1, justifyContent: "flex-end" }}>
+      <View style={{ flex: 1, justifyContent: "flex-end", height: "100%" }}>
         <Rocket />
         <ControlPanel />
       </View>

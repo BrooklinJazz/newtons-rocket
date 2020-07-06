@@ -1,22 +1,26 @@
 import React, { useState } from "react";
 import { IPhysics } from "./IPhysics";
 export const PhysicsContext = React.createContext<IPhysics>({});
-export const PhysicsProvider = ({ children }: { children: any; }) => {
-  const [Force, setForce] = useState(10)
-  const [Mass, setMass] = useState(100);
+export const PhysicsProvider = ({ children }: { children: any }) => {
+  const [Force, setForce] = useState(10);
+  const [Mass, setMass] = useState(10);
   const [Acceleration, setAcceleration] = useState(Force / Mass);
+  const boundValue = (value: number) => Math.min(Math.max(value, 1), 1000);
   const onChangeForce = (value: number) => {
-    setForce(value)
-    setAcceleration(value / Mass)
-  }
+    let boundedValue = boundValue(value)
+    setForce(boundedValue);
+    setAcceleration(boundedValue / Mass);
+  };
   const onChangeAcceleration = (value: number) => {
-    setAcceleration(value)
-    setForce(Mass * value)
-  }
+    let boundedValue = boundValue(value)
+    setAcceleration(boundedValue);
+    setForce(Mass * boundedValue);
+  };
   const onChangeMass = (value: number) => {
-    setMass(value)
-    setAcceleration(Force / value)
-  }
+    let boundedValue = boundValue(value)
+    setMass(boundedValue);
+    setAcceleration(Force / boundedValue);
+  };
   const [Time, setTime] = useState(0);
   const Velocity = Acceleration * Time;
   const Distance = Velocity * Time;

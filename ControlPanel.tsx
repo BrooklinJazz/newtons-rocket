@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from "react";
+import React, { useEffect, useContext, useRef, useState } from "react";
 import { View, Animated, Keyboard, TextInput } from "react-native";
 import { BaseText } from "./Equations";
 import { PhysicsContext } from "./PhysicsContext";
@@ -8,6 +8,7 @@ const Input = styled.TextInput`
   color: ${foreground};
   font-size: 20px;
   background-color: ${background};
+  text-align: right;
 `;
 const PhysicsInput = ({
   setter,
@@ -19,6 +20,10 @@ const PhysicsInput = ({
   label: string;
 }) => {
   const inputRef = useRef<TextInput | null>(null);
+  const [tempValue, setTempValue] = useState(value.toString())
+  useEffect(() => {
+    setTempValue(value.toString())
+  }, [value])
   return (
     <View>
       <BaseText
@@ -30,14 +35,20 @@ const PhysicsInput = ({
       <Input
         ref={inputRef}
         onChangeText={(text) => {
-          setter(parseFloat(text) || value);
+          if (!isNaN(parseFloat(text))) {
+            setTempValue(text)
+          }
         }}
-        onBlur={(e) => {
-          setter(parseFloat(e.nativeEvent.text) || value);
+        clearTextOnFocus
+        onSubmitEditing={e => {
+          const newValue = e.nativeEvent.text
+          if (!isNaN(parseFloat(newValue))) {
+            setter(parseFloat(newValue))
+          }
         }}
         keyboardType="numeric"
         returnKeyType={"done"}
-        placeholder={value.toFixed(2)}
+        value={tempValue}
         placeholderTextColor={foreground}
       />
     </View>
@@ -85,17 +96,17 @@ export const ControlPanel = () => {
       style={{
         position: "absolute",
         justifyContent: "space-evenly",
-        width: 100,
+        width: 130,
         height: 200,
         bottom: keyboardOffset,
       }}
     >
-      <PhysicsInput setter={onChangeForce} value={Force} label="Force" />
-      <PhysicsInput setter={onChangeMass} value={Mass} label="Mass" />
+      <PhysicsInput setter={onChangeForce} value={Force} label="Force (N)" />
+      <PhysicsInput setter={onChangeMass} value={Mass} label="Mass (KG)" />
       <PhysicsInput
         setter={onChangeAcceleration}
         value={Acceleration}
-        label="Acceleration"
+        label="Acceleration (m/s²)"
       />
     </Animated.View>
   );
