@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Platform } from 'react-native';
 import styled from 'styled-components/native';
 import { IPhysics } from "./IPhysics";
 import Svg, {SvgUri} from 'react-native-svg';
@@ -8,6 +8,8 @@ import  RocketWithFlames from "./assets/RocketWithFlames.png"
 import { PhysicsContext } from './PhysicsContext';
 import useInterval from '@use-it/interval';
 import { MaximumDistance } from './MaximumDistance';
+
+const webStyles = Platform.OS === "web" ? {width: 100} : {}
 
 export const Rocket = () => {
   const {Distance, started, incrementTime} = useContext(PhysicsContext)
@@ -28,7 +30,7 @@ export const Rocket = () => {
         overflow: "hidden",
       }}
     >
-      <View style={{height: 100, position: "absolute", bottom: `${Distance}%`}}>
+      <View style={{height: 100, position: "absolute", bottom: `${Distance}%`, ...webStyles}}>
       <Image style={{flex: 1}} resizeMode={"contain"} source={started ? RocketWithFlames : RocketNoFlames}/>
       </View>
     </View>

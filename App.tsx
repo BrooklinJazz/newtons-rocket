@@ -1,7 +1,8 @@
-import React from "react";
-import { SafeAreaView, StatusBar } from "react-native";
-import { PhysicsProvider } from "./PhysicsContext";
-import { NewtonsRocket } from "./NewtonsRocket";
+import React from 'react';
+import { SafeAreaView, StatusBar } from 'react-native';
+import { NewtonsRocket } from './NewtonsRocket';
+import { PhysicsProvider } from './PhysicsContext';
+
 
 export default function App() {
   return (

@@ -17,57 +17,119 @@ import { MaximumDistance } from "./MaximumDistance";
 import { PhysicsContext } from "./PhysicsContext";
 import { background } from "./Colors";
 import { ControlPanel } from "./ControlPanel";
+import { useDimensions } from "./useDimensions";
+
+const webStyles =
+  Platform.OS === "web"
+    ? {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }
+    : {};
+
+const Container = ({ height, width, children }) => {
+  return (
+    <View
+      style={{
+        height,
+        width,
+        ...webStyles,
+      }}
+    >
+      {children}
+    </View>
+  );
+};
+
 export const NewtonsRocket = () => {
   const { Distance, stop, start } = useContext(PhysicsContext);
 
   useEffect(() => {
     if (Distance >= MaximumDistance) {
-      Alert.alert("Liftoff!!", undefined, [
-        {
-          text: "Launch",
-          onPress: stop,
+      const reset = Platform.select({
+        web: () => {
+          alert("Liftoff!");
+          stop();
         },
-      ]);
+        default: () =>
+          Alert.alert("Liftoff!", undefined, [
+            {
+              text: "Launch Again",
+              onPress: stop,
+            },
+          ]),
+      });
+      reset();
     }
   }, [Distance]);
 
   // on Android, the height changes when the keyboard opens
   // so elements are shoved upwards
   // to fix this, use the window dimensions on android
-  const { height: androidHeight, width: androidWidth } = useWindowDimensions();
+  const { height: initHeight, width: initWidth } = useDimensions();
   const height = Platform.select<string | number>({
-    android: androidHeight - (StatusBar.currentHeight || 0),
-    ios: "100%"
-  })
+    android: initHeight - (StatusBar.currentHeight || 0),
+    web: "100vh",
+    default: "100%",
+  });
   const width = Platform.select<string | number>({
-    android: androidWidth,
-    ios: "100%"
-  })
+    android: initWidth,
+    default: "100%",
+  });
   return (
-    <View
-      style={{
-        height,
-        width,
-      }}
-    >
+    <Container height={height} width={width}>
+      <WebWrapper>
+        <View
+          style={{
+            width,
+            borderBottomColor: background,
+            flexDirection: "row",
+            borderBottomWidth: 1,
+            padding: 10,
+            backgroundColor: background,
+          }}
+        >
+          <Graph />
+          <Equations />
+        </View>
+        <View style={{ flex: 1, justifyContent: "flex-end", height }}>
+          <Rocket />
+          <ControlPanel />
+        </View>
+        <LaunchButton onPress={start} />
+      </WebWrapper>
+    </Container>
+  );
+};
+
+const WebWrapper = ({ children }) => {
+  let height = 0,
+    width = 0;
+  if (Platform.OS === "web") {
+    width =
+      window.innerWidth ||
+      document.documentElement.clientWidth ||
+      document.body.clientWidth;
+    height =
+      window.innerHeight ||
+      document.documentElement.clientHeight ||
+      document.body.clientHeight;
+  }
+
+  return Platform.select({
+    web: (
       <View
         style={{
-          width,
-          borderBottomColor: background,
-          flexDirection: "row",
-          borderBottomWidth: 1,
-          padding: 10,
-          backgroundColor: background,
+          height: Math.min(height, 700),
+          width: Math.min(width, 400),
+          borderColor: background,
+          borderWidth: 2,
         }}
       >
-        <Graph />
-        <Equations />
+        {children}
       </View>
-      <View style={{ flex: 1, justifyContent: "flex-end", height }}>
-        <Rocket />
-          <ControlPanel />
-      </View>
-      <LaunchButton onPress={start} />
-    </View>
-  );
+    ),
+    default: children,
+  });
 };
