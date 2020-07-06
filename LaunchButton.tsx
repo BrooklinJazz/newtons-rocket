@@ -22,5 +22,5 @@ const LaunchText = styled.Text.attrs(() => ({
 background-color: ${primary};
 color: white;
 font-weight: bold;
-font-size: 25;
+font-size: 25px;
 `;
