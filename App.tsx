@@ -7,6 +7,7 @@ export default function App() {
   return (
     <PhysicsProvider>
       <SafeAreaView>
+          <StatusBar/>
         <NewtonsRocket />
       </SafeAreaView>
     </PhysicsProvider>

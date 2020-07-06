@@ -7,6 +7,7 @@ import {
   Platform,
   useWindowDimensions,
   KeyboardAvoidingView,
+  StatusBar,
 } from "react-native";
 import { Graph } from "./Graph";
 import { Rocket } from "./Rocket";
@@ -35,7 +36,7 @@ export const NewtonsRocket = () => {
   // to fix this, use the window dimensions on android
   const { height: androidHeight, width: androidWidth } = useWindowDimensions();
   const height = Platform.select<string | number>({
-    android: androidHeight,
+    android: androidHeight - (StatusBar.currentHeight || 0),
     ios: "100%"
   })
   const width = Platform.select<string | number>({
