@@ -1,6 +1,13 @@
 import useInterval from "@use-it/interval";
 import React, { useEffect, useContext } from "react";
-import { Alert, View, TextInput, Platform } from "react-native";
+import {
+  Alert,
+  View,
+  TextInput,
+  Platform,
+  useWindowDimensions,
+  KeyboardAvoidingView,
+} from "react-native";
 import { Graph } from "./Graph";
 import { Rocket } from "./Rocket";
 import { LaunchButton } from "./LaunchButton";
@@ -10,31 +17,41 @@ import { PhysicsContext } from "./PhysicsContext";
 import { background } from "./Colors";
 import { ControlPanel } from "./ControlPanel";
 export const NewtonsRocket = () => {
-  const { Distance, stop, start } = useContext(
-    PhysicsContext
-  );
+  const { Distance, stop, start } = useContext(PhysicsContext);
 
   useEffect(() => {
     if (Distance >= MaximumDistance) {
-      Alert.alert("Huston we have liftoff!!!", undefined, [
+      Alert.alert("Liftoff!!", undefined, [
         {
-          text: "Roger! Lets do it again",
+          text: "Launch",
           onPress: stop,
         },
       ]);
     }
   }, [Distance]);
 
+  // on Android, the height changes when the keyboard opens
+  // so elements are shoved upwards
+  // to fix this, use the window dimensions on android
+  const { height: androidHeight, width: androidWidth } = useWindowDimensions();
+  const height = Platform.select<string | number>({
+    android: androidHeight,
+    ios: "100%"
+  })
+  const width = Platform.select<string | number>({
+    android: androidWidth,
+    ios: "100%"
+  })
   return (
     <View
       style={{
-        height: "100%",
-        width: "100%",
+        height,
+        width,
       }}
     >
       <View
         style={{
-          width: "100%",
+          width,
           borderBottomColor: background,
           flexDirection: "row",
           borderBottomWidth: 1,
@@ -45,9 +62,9 @@ export const NewtonsRocket = () => {
         <Graph />
         <Equations />
       </View>
-      <View style={{ flex: 1, justifyContent: "flex-end", height: "100%" }}>
+      <View style={{ flex: 1, justifyContent: "flex-end", height }}>
         <Rocket />
-        <ControlPanel />
+          <ControlPanel />
       </View>
       <LaunchButton onPress={start} />
     </View>

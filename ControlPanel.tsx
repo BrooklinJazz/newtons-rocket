@@ -1,8 +1,8 @@
 import React, { useEffect, useContext, useRef, useState } from "react";
-import { View, Animated, Keyboard, TextInput } from "react-native";
+import { View, Animated, Keyboard, TextInput, Platform } from "react-native";
 import { BaseText } from "./Equations";
 import { PhysicsContext } from "./PhysicsContext";
-import { background, foreground } from "./Colors";
+import { background, foreground, primary } from "./Colors";
 import styled from "styled-components/native";
 const Input = styled.TextInput`
   color: ${foreground};
@@ -20,31 +20,38 @@ const PhysicsInput = ({
   label: string;
 }) => {
   const inputRef = useRef<TextInput | null>(null);
-  const [tempValue, setTempValue] = useState(value.toString())
+  const [tempValue, setTempValue] = useState(value.toString());
   useEffect(() => {
-    setTempValue(value.toString())
-  }, [value])
+    setTempValue(value.toString());
+  }, [value]);
   return (
     <View>
       <BaseText
         onPress={() => inputRef?.current?.focus()}
-        style={{ backgroundColor: "red" }}
+        style={{ backgroundColor: primary }}
       >
         {label}
       </BaseText>
       <Input
         ref={inputRef}
         onChangeText={(text) => {
-          if (!isNaN(parseFloat(text))) {
-            setTempValue(text)
+          const containsLetters = text.split("").some((each) => isNaN(each));
+          if (!containsLetters) {
+            setTempValue(text);
           }
         }}
-        clearTextOnFocus
-        onSubmitEditing={e => {
-          const newValue = e.nativeEvent.text
-          if (!isNaN(parseFloat(newValue))) {
-            setter(parseFloat(newValue))
+        onFocus={() => {
+          setTempValue("")
+        }}
+        onEndEditing={(e) => {
+          const text = e.nativeEvent.text;
+          const containsLetters = text.split("").some((each) => isNaN(each));
+          if (text === "") {
+            setTempValue(value.toString())
+          } else if (!containsLetters) {
+            setter(parseFloat(text));
           }
+
         }}
         keyboardType="numeric"
         returnKeyType={"done"}
@@ -54,6 +61,7 @@ const PhysicsInput = ({
     </View>
   );
 };
+
 export const ControlPanel = () => {
   const keyboardOffset = useRef(new Animated.Value(0)).current;
 
@@ -67,15 +75,27 @@ export const ControlPanel = () => {
     }).start();
 
   useEffect(() => {
-    // start the animation when the keyboard appears
-    Keyboard.addListener("keyboardWillShow", (e) => {
-      // use the height of the keyboard (negative because the translateY moves upward)
-      startAnimation(e.endCoordinates?.height);
+    // Android is not responding to willShow/willHide events
+    // but does respond to didShow/didHide
+    const setKeyboardEvent = Platform.select({
+      android: () => {
+        Keyboard.addListener("keyboardDidShow", (e) => {
+          startAnimation(e.endCoordinates?.height);
+        });
+        Keyboard.addListener("keyboardDidHide", (e) => {
+          startAnimation(0);
+        });
+      },
+      ios: () => {
+        Keyboard.addListener("keyboardWillShow", (e) => {
+          startAnimation(e.endCoordinates?.height);
+        });
+        Keyboard.addListener("keyboardWillHide", () => {
+          startAnimation(0);
+        });
+      },
     });
-    // perform the reverse animation back to keyboardOffset initial value: 0
-    Keyboard.addListener("keyboardWillHide", () => {
-      startAnimation(0);
-    });
+    setKeyboardEvent && setKeyboardEvent();
     return () => {
       // remove listeners to avoid memory leak
       Keyboard.removeAllListeners("keyboardWillShow");

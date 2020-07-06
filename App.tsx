@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, StatusBar } from "react-native";
 import { PhysicsProvider } from "./PhysicsContext";
 import { NewtonsRocket } from "./NewtonsRocket";
 

@@ -1,15 +1,14 @@
 import React, { useContext } from "react";
 import { Svg, Path, Line, Text as SvgText, Circle } from "react-native-svg";
 import { MaximumDistance } from "./MaximumDistance";
-import { IPhysics } from "./IPhysics";
 import { PhysicsContext } from "./PhysicsContext";
-import { foreground } from "./Colors";
+import { foreground, primary } from "./Colors";
 
 export const Graph = () => {
   const {Time, Distance, Acceleration} = useContext(PhysicsContext)
   return (
     <Svg style={{ height: 200, width: 200 }} viewBox="-30 -30 150 150">
-      <Circle cx={Time} cy={100 - Distance} r="5" fill={"red"} />
+      <Circle cx={Time} cy={100 - Distance} r="5" fill={primary} />
       <Path
         d={`M 0,100 ${plotPoints(Acceleration)}`}
         fill="none"
