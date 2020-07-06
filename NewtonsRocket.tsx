@@ -121,8 +121,8 @@ const WebWrapper = ({ children }) => {
     web: (
       <View
         style={{
-          height: Math.min(height, 700),
-          width: Math.min(width, 400),
+          height: Math.min(height, 1024),
+          width: Math.min(width, 500),
           borderColor: background,
           borderWidth: 2,
         }}
