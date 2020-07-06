@@ -4,7 +4,7 @@
     "slug": "newtons-rocket",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/RocketWithFlames.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -17,10 +17,16 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.brooklinjazzmyers.newtonsrocketship",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
+    "android": {
+      "package": "com.brooklinjazzmyers.newtonsrocketship",
+      "versionCode": 1
+    },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/RocketWithFlames.png"
     }
   }
 }
