@@ -5,8 +5,6 @@ Newtons Rocket is a simple physics game that helps you understand and visualize 
 - See how that changes the distance/time graph
 - Launch the rocket into space!
 
-This is intended as an introduction to help visualization of Force = Mass * Acceleration
-
 ## See the Project
 - Web: https://newtons-rocket-ship.netlify.app
 - Android: pending
